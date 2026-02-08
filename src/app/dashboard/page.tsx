@@ -36,6 +36,7 @@ import {
   getTemplateById,
   type AnalysisTemplate,
 } from "@/lib/ecommerce-templates";
+import { addHistoryEntry } from "@/lib/history-storage";
 
 type ToolType = "scrape" | "search" | "crawl" | "map" | "agent";
 type ProviderType = "firecrawl" | "exa" | "jina" | "scrapingant" | "native" | "auto";
@@ -317,6 +318,28 @@ export default function DashboardPage() {
 
       const data = await response.json();
       setResult(data);
+
+      // Save to history if successful
+      if (data.success) {
+        const urlToSave = tool === "scrape" ? scrapeUrl :
+                         tool === "search" ? (searchType === "similar" ? similarUrl : searchQuery) :
+                         tool === "crawl" ? crawlUrl :
+                         tool === "map" ? mapUrl :
+                         tool === "agent" ? (agentUrls.split("\n")[0] || "Agent Query") : "";
+
+        const preview = data.data?.markdown?.substring(0, 200) ||
+                       data.data?.output?.substring(0, 200) ||
+                       (data.data?.results?.[0]?.title || "") + " " + (data.data?.results?.[0]?.snippet || "");
+
+        addHistoryEntry({
+          url: urlToSave,
+          type: tool,
+          provider: data.provider,
+          title: data.data?.title || undefined,
+          preview: preview || undefined,
+          data: data.data,
+        });
+      }
     } catch (error) {
       setResult({
         success: false,
@@ -426,6 +449,9 @@ export default function DashboardPage() {
             </Button>
             <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 text-xs md:text-sm" onClick={() => router.push("/dashboard/seo")}>
               📊 SEO
+            </Button>
+            <Button variant="ghost" size="sm" className="text-yellow-400 hover:text-yellow-300 text-xs md:text-sm" onClick={() => router.push("/dashboard/history")}>
+              📜 History
             </Button>
             <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white text-xs md:text-sm" onClick={() => router.push("/docs/de")}>
               Hilfe
