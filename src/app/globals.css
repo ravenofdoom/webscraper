@@ -122,4 +122,16 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Cursor pointer for interactive elements */
+  a, button, [role="button"], [role="tab"],
+  input[type="checkbox"], input[type="radio"],
+  select, .cursor-pointer {
+    cursor: pointer;
+  }
+
+  /* Hover effects for links */
+  a:hover {
+    text-decoration: underline;
+  }
 }

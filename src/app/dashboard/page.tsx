@@ -61,37 +61,67 @@ const PROVIDERS = {
   native: { name: "Native Fetch", icon: "🌐", color: "green", description: "Unbegrenzt, nur statische Seiten" },
 };
 
-// Tool configurations
+// Tool configurations with tips
 const TOOLS = {
   scrape: {
     name: "Scrape",
     icon: "📄",
     description: "Extrahiert den Inhalt einer einzelnen URL als Markdown.",
     providers: ["auto", "jina", "scrapingant", "firecrawl", "native"],
+    tips: [
+      "Gib die vollständige URL ein (inkl. https://)",
+      "Wähle 'Auto' für automatische Provider-Auswahl",
+      "Aktiviere JS-Rendering für dynamische Seiten",
+      "Ideal für Produktseiten, Blogs, Dokumentation",
+    ],
   },
   search: {
     name: "Search",
     icon: "🔍",
     description: "Durchsucht das Web semantisch nach relevanten Inhalten.",
     providers: ["exa"],
+    tips: [
+      "Beschreibe, was du suchst - nicht nur Keywords",
+      "Nutze 'Ähnliche Seiten' für Wettbewerber-Analyse",
+      "Beispiel: 'Online-Shops für nachhaltige Mode'",
+      "Ergebnisse enthalten Titel, URL und Inhalt",
+    ],
   },
   crawl: {
     name: "Crawl",
     icon: "🕷️",
     description: "Durchsucht eine Website rekursiv und sammelt mehrere Seiten.",
     providers: ["firecrawl"],
+    tips: [
+      "Starte mit der Startseite der Domain",
+      "Setze ein Limit um Credits zu sparen",
+      "Ideal für Knowledge Base Aufbau",
+      "Folgt automatisch internen Links",
+    ],
   },
   map: {
     name: "Map",
     icon: "🗺️",
     description: "Erstellt eine Übersicht aller URLs einer Website.",
     providers: ["firecrawl"],
+    tips: [
+      "Schneller als Crawl - nur URLs, keine Inhalte",
+      "Nutze Filter für spezifische Bereiche (z.B. 'blog')",
+      "Gut zur Planung vor dem Scrapen",
+      "Zeigt die Struktur einer Website",
+    ],
   },
   agent: {
     name: "Agent",
     icon: "🤖",
     description: "KI-Agent sucht autonom im Web nach Informationen.",
     providers: ["firecrawl"],
+    tips: [
+      "Formuliere präzise Fragen in natürlicher Sprache",
+      "URLs sind optional - Agent sucht selbstständig",
+      "Beispiel: 'Welche PIM-Software nutzt shop.de?'",
+      "Kann mehrere Minuten dauern - Geduld!",
+    ],
   },
 };
 
@@ -412,11 +442,15 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ToolType)}>
-                <TabsList className="grid grid-cols-5 mb-6 bg-slate-700">
+                <TabsList className="grid grid-cols-5 mb-6 bg-slate-700 h-auto p-1">
                   {Object.entries(TOOLS).map(([id, tool]) => (
-                    <TabsTrigger key={id} value={id} className="text-xs data-[state=active]:bg-blue-600 flex flex-col gap-0.5 py-2">
-                      <span>{tool.icon}</span>
-                      <span className="text-[10px]">{tool.name}</span>
+                    <TabsTrigger
+                      key={id}
+                      value={id}
+                      className="cursor-pointer data-[state=active]:bg-blue-600 flex flex-col gap-1 py-3 px-2 min-h-[60px]"
+                    >
+                      <span className="text-lg">{tool.icon}</span>
+                      <span className="text-xs font-medium">{tool.name}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -699,9 +733,24 @@ export default function DashboardPage() {
                   <p className="text-slate-400 text-center">{loadingMessage}</p>
                 </div>
               ) : !result ? (
-                <p className="text-slate-400 text-center py-8">
-                  Wähle ein Tool und starte eine Anfrage
-                </p>
+                <div className="py-6 px-4">
+                  <div className="text-center mb-6">
+                    <span className="text-4xl mb-2 block">{TOOLS[activeTab].icon}</span>
+                    <h3 className="text-xl font-semibold text-slate-300">{TOOLS[activeTab].name}</h3>
+                    <p className="text-slate-500 text-sm mt-1">{TOOLS[activeTab].description}</p>
+                  </div>
+                  <div className="border-t border-slate-700 pt-4">
+                    <h4 className="text-slate-400 text-sm font-medium mb-3 text-center">💡 Tipps</h4>
+                    <ul className="space-y-2">
+                      {TOOLS[activeTab].tips.map((tip, index) => (
+                        <li key={index} className="flex items-start gap-2 text-slate-500 text-sm">
+                          <span className="text-slate-600">•</span>
+                          <span>{tip}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               ) : result.error ? (
                 <div className="bg-red-900/30 border border-red-700 rounded-lg p-4">
                   <p className="text-red-300 font-medium mb-2">Fehler</p>
