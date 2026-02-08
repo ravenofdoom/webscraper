@@ -414,8 +414,9 @@ export default function DashboardPage() {
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ToolType)}>
                 <TabsList className="grid grid-cols-5 mb-6 bg-slate-700">
                   {Object.entries(TOOLS).map(([id, tool]) => (
-                    <TabsTrigger key={id} value={id} className="text-xs data-[state=active]:bg-blue-600">
-                      {tool.icon}
+                    <TabsTrigger key={id} value={id} className="text-xs data-[state=active]:bg-blue-600 flex flex-col gap-0.5 py-2">
+                      <span>{tool.icon}</span>
+                      <span className="text-[10px]">{tool.name}</span>
                     </TabsTrigger>
                   ))}
                 </TabsList>
