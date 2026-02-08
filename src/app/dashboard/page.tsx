@@ -30,6 +30,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  ANALYSIS_TEMPLATES,
+  TEMPLATE_CATEGORIES,
+  getTemplateById,
+  type AnalysisTemplate,
+} from "@/lib/ecommerce-templates";
 
 type ToolType = "scrape" | "search" | "crawl" | "map" | "agent";
 type ProviderType = "firecrawl" | "exa" | "jina" | "scrapingant" | "native" | "auto";
@@ -165,6 +171,7 @@ export default function DashboardPage() {
   // Agent form
   const [agentPrompt, setAgentPrompt] = useState("");
   const [agentUrls, setAgentUrls] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
 
   // Load configured providers on mount
   useEffect(() => {
@@ -660,26 +667,85 @@ export default function DashboardPage() {
                     <p className="text-blue-300 text-sm">{TOOLS.agent.icon} {TOOLS.agent.description}</p>
                   </div>
 
+                  {/* Template Selection */}
                   <div className="space-y-2">
-                    <Label className="text-white">Was möchtest du herausfinden?</Label>
+                    <Label className="text-white">Analyse-Vorlage (optional)</Label>
+                    <Select
+                      value={selectedTemplate}
+                      onValueChange={(value) => {
+                        setSelectedTemplate(value);
+                        if (value) {
+                          const template = getTemplateById(value);
+                          if (template) {
+                            setAgentPrompt(template.prompt);
+                          }
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+                        <SelectValue placeholder="Vorlage wählen oder eigenen Prompt schreiben..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-700 border-slate-600 max-h-80">
+                        <SelectItem value="custom" className="text-slate-300">
+                          ✏️ Eigener Prompt
+                        </SelectItem>
+                        {Object.entries(TEMPLATE_CATEGORIES).map(([catId, cat]) => (
+                          <div key={catId}>
+                            <div className="px-2 py-1.5 text-xs font-semibold text-slate-400 bg-slate-800">
+                              {cat.icon} {cat.name}
+                            </div>
+                            {ANALYSIS_TEMPLATES
+                              .filter((t) => t.category === catId)
+                              .map((template) => (
+                                <SelectItem key={template.id} value={template.id} className="text-white">
+                                  {template.icon} {template.name}
+                                </SelectItem>
+                              ))}
+                          </div>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {selectedTemplate && selectedTemplate !== "custom" && (
+                      <p className="text-xs text-slate-400">
+                        {getTemplateById(selectedTemplate)?.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-white">
+                      {selectedTemplate && selectedTemplate !== "custom" ? "Analyse-Prompt (anpassbar)" : "Was möchtest du herausfinden?"}
+                    </Label>
                     <Textarea
                       placeholder="z.B. Welche PIM-Software nutzt der Böttcher Online Shop?"
                       value={agentPrompt}
-                      onChange={(e) => setAgentPrompt(e.target.value)}
-                      rows={4}
-                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
+                      onChange={(e) => {
+                        setAgentPrompt(e.target.value);
+                        if (selectedTemplate && selectedTemplate !== "custom") {
+                          // If user edits template prompt, switch to custom
+                          const template = getTemplateById(selectedTemplate);
+                          if (template && e.target.value !== template.prompt) {
+                            setSelectedTemplate("custom");
+                          }
+                        }
+                      }}
+                      rows={6}
+                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 text-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white">URLs (optional - eine pro Zeile)</Label>
+                    <Label className="text-white">Ziel-URLs (eine pro Zeile)</Label>
                     <Textarea
-                      placeholder="https://example.com"
+                      placeholder="https://shop.example.com"
                       value={agentUrls}
                       onChange={(e) => setAgentUrls(e.target.value)}
                       rows={2}
                       className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400"
                     />
+                    <p className="text-xs text-slate-400">
+                      Der Agent analysiert diese URLs mit dem gewählten Prompt
+                    </p>
                   </div>
 
                   <Button
@@ -687,7 +753,7 @@ export default function DashboardPage() {
                     disabled={loading || !agentPrompt || !configuredProviders.firecrawl}
                     className="w-full bg-blue-600 hover:bg-blue-700"
                   >
-                    {!configuredProviders.firecrawl ? "Firecrawl nicht konfiguriert" : loading && activeTab === "agent" ? loadingMessage : "Agent starten"}
+                    {!configuredProviders.firecrawl ? "Firecrawl nicht konfiguriert" : loading && activeTab === "agent" ? loadingMessage : "Analyse starten"}
                   </Button>
                 </TabsContent>
               </Tabs>
