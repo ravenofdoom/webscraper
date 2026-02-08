@@ -415,6 +415,9 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
           <h1 className="text-xl font-bold text-white">🌐 WebScraper</h1>
           <div className="flex items-center gap-2 md:gap-4">
+            <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 text-xs md:text-sm" onClick={() => router.push("/dashboard/compare")}>
+              📊 Vergleich
+            </Button>
             <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white text-xs md:text-sm" onClick={() => router.push("/docs/de")}>
               Hilfe
             </Button>
