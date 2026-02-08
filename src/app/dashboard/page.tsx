@@ -424,6 +424,9 @@ export default function DashboardPage() {
             <Button variant="ghost" size="sm" className="text-cyan-400 hover:text-cyan-300 text-xs md:text-sm" onClick={() => router.push("/dashboard/procurement")}>
               🔗 B2B
             </Button>
+            <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 text-xs md:text-sm" onClick={() => router.push("/dashboard/seo")}>
+              📊 SEO
+            </Button>
             <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white text-xs md:text-sm" onClick={() => router.push("/docs/de")}>
               Hilfe
             </Button>
