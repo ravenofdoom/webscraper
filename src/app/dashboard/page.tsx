@@ -433,16 +433,16 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Tools Panel */}
-          <Card className="bg-slate-800/50 border-slate-700">
-            <CardHeader>
-              <CardTitle className="text-white">Web Scraping Tools</CardTitle>
+          <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+            <CardHeader className="bg-slate-800/50 pb-4">
+              <CardTitle className="text-white text-xl">Web Scraping Tools</CardTitle>
               <CardDescription className="text-slate-400">
                 Wähle ein Tool und einen Provider für deine Anfrage
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ToolType)}>
-                <TabsList className="grid grid-cols-5 mb-6 bg-slate-700 h-auto p-1">
+                <TabsList className="grid grid-cols-5 mb-6 bg-slate-700 h-auto p-1 rounded-lg overflow-hidden">
                   {Object.entries(TOOLS).map(([id, tool]) => (
                     <TabsTrigger
                       key={id}
