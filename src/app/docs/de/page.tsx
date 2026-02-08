@@ -35,12 +35,15 @@ export default function DocsDE() {
         {/* Intro */}
         <Card className="bg-slate-800/50 border-slate-700">
           <CardHeader>
-            <CardTitle className="text-white text-2xl">Willkommen bei Firecrawl</CardTitle>
+            <CardTitle className="text-white text-2xl">Willkommen zum WebScraper Tool E-Commerce</CardTitle>
           </CardHeader>
           <CardContent className="prose prose-invert max-w-none">
             <p className="text-slate-300">
-              Firecrawl ist ein leistungsstarkes Web-Scraping-Tool, das Webseiten in strukturierte,
-              LLM-freundliche Daten umwandelt. Diese Anwendung bietet vier Hauptfunktionen:
+              Dieses leistungsstarke Multi-Provider Web-Scraping-Tool wandelt Webseiten in strukturierte,
+              LLM-freundliche Daten um. Ideal für E-Commerce-Analyse, Wettbewerber-Monitoring und Shop-Optimierung.
+            </p>
+            <p className="text-slate-300 mt-2">
+              <strong className="text-white">Verfügbare Funktionen:</strong> Scrape, Search, Crawl, Map, Agent
             </p>
           </CardContent>
         </Card>
@@ -111,6 +114,44 @@ export default function DocsDE() {
                 <li><strong className="text-white">HTML:</strong> Vollständiger HTML-Code</li>
                 <li><strong className="text-white">Links:</strong> Alle Links auf der Seite</li>
               </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Search */}
+        <Card className="bg-purple-900/20 border-purple-700/50">
+          <CardHeader>
+            <CardTitle className="text-purple-300 text-xl">🔍 Search</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-slate-300">
+              <strong className="text-white">Search</strong> nutzt Exa für semantische Web-Suche.
+              Finde relevante Inhalte basierend auf Bedeutung, nicht nur Keywords.
+            </p>
+
+            <div className="bg-slate-800 rounded-lg p-4">
+              <h4 className="text-white font-medium mb-2">Zwei Such-Modi:</h4>
+              <ul className="list-disc list-inside text-slate-300 space-y-1">
+                <li><strong className="text-white">Semantische Suche:</strong> Beschreibe, was du suchst - Exa findet passende Seiten</li>
+                <li><strong className="text-white">Ähnliche Seiten:</strong> Gib eine URL an und finde ähnliche Websites</li>
+              </ul>
+            </div>
+
+            <div className="bg-slate-800 rounded-lg p-4">
+              <h4 className="text-white font-medium mb-2">Beispiel-Suchen für E-Commerce:</h4>
+              <ul className="list-disc list-inside text-slate-400 space-y-1">
+                <li>&quot;E-Commerce Shops die Shopify nutzen in Deutschland&quot;</li>
+                <li>&quot;Online-Shops für nachhaltige Mode mit über 1000 Produkten&quot;</li>
+                <li>&quot;Wettbewerber von zalando.de im Fashion-Bereich&quot;</li>
+                <li>&quot;B2B Online-Shops für Industriebedarf&quot;</li>
+              </ul>
+            </div>
+
+            <div className="bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-3">
+              <p className="text-yellow-300 text-sm">
+                <strong>Tipp:</strong> Nutze &quot;Ähnliche Seiten finden&quot; um Wettbewerber zu entdecken -
+                gib einfach die URL eines Konkurrenten ein.
+              </p>
             </div>
           </CardContent>
         </Card>
